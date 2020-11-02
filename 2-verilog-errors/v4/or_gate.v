@@ -5,7 +5,7 @@ module or_gate(
 );
 
     always_comb begin
-        if (a==1 && b==1) begin
+        /* if (a==1 && b==1) begin
             r = 1;
         end
         if (a==1) begin
@@ -13,7 +13,8 @@ module or_gate(
         end
         if (b==1) begin
             r = 1;
-        end
+        end */
+        r = a || b;
     end
 
 endmodule

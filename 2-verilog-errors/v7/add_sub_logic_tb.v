@@ -32,7 +32,7 @@ module add_sub_logic_tb();
 
         op=2; a=7;  b=11;
         #1;
-        assert(!r);
+        assert(r == ~b);
 
         op=2; a=11; b=7;
         #1;
@@ -42,11 +42,11 @@ module add_sub_logic_tb();
 
         op=3; a=3; b=10;
         #1;
-        assert(r==16'hfff5);
+        assert(r==16'h0000);
 
         op=3; a=10; b=3;
         #1;
-        assert(r==16'hfffC);
+        assert(r==16'h0001);
     end
 
     add_sub_logic dut(

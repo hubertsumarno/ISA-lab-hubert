@@ -25,6 +25,7 @@ module or_tb();
         b=0;
         #1;
         assert(r==0);
+
     end
 
     or_gate dut(a,b,r);
