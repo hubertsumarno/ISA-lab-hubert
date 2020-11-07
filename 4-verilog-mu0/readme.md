@@ -172,17 +172,21 @@ Concrete modifications you might like to try are:
 
 - There is a lot of shared code between delay0 and delay1, particularly in the instruction execute
     logic. Can this logic be refactored out into a shared module?
+    - I guess you can, so you create a lower level module and is it the final synthesis of both MU0 implementations.
 
 - The delay1 variant always takes 4 cycles per instruction. Can you create a new variant
     which uses the minimal number of cycles for each instruction?
+    - I guess you can, but I don't know where to start to be honest.
 
 - In the delay1 variant, the instruction fetch always takes one cycle before the execution
     cycle. Is it possible to fetch the next instruction while executing the previous
     instruction? If so, for which instructions is it possible? (Does this seem like a good
     idea, from a critical path point of view?)
+    - Yes you can definitely pipeline, and it should could have a problem in the critical path point of view because the critical path of the a `fetch + execute = execute`, however, this should not change the clock rate as the clock period would still the critical time of the instruction that takes the longest to execute.
 
 - The three test-cases don't actually test all instructions. Try adding a test-case that
-    tests any missed instructions. 
+    tests any missed instructions.
+    - This is propably the easiest task. 
 
 - Think through edge-cases, and try to add test-cases. The MIPS presented here contains
     one known edge-cast failure, and possibly other unknowns. Traditional problem edge cases include:
