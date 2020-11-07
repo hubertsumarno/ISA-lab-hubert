@@ -20,6 +20,7 @@ module register_file(
     logic[15:0] reg_0, reg_1;
     assign reg_0 = regs[0];
     assign reg_1 = regs[1];
+    // line 21 and 22 is pretty useless ?!
 
     assign read_data_a = reset==1 ? 0 : regs[read_index_a];
 

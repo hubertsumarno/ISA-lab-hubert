@@ -162,8 +162,11 @@ You can do this by:
 Questions you may want to ask yourself are:
 
 - Each variant has a single test-bench. How does the test-bench know which test-case to load?
+    - Ans: In `run_one_testbench.sh`, the hex binary of each testbench is loaded as a parameter into the test bench called `RAM_INIT_FILE` which will be used to initiliase the memory contents in the respective RAM verilog files.
 - Each test-case is written in assembly, but must be loaded as a hex binary. At what point does the conversion happen?
+    - Ans: This conversion happens when the assember is turns the assembly instructions into hex binary at `line 18` of `run_one_testcase.sh`.
 - If you add new test-case assembly files, they will be automatically included. How does that happen?
+    - Ans: In `run_all_testcases.sh`, it accesses all the assembly files in `test/0-assembly` and iterates through all the test benches, executing each one with `run_one_testcase.sh`.
 
 Concrete modifications you might like to try are:
 
