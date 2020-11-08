@@ -184,6 +184,7 @@ Concrete modifications you might like to try are:
     idea, from a critical path point of view?)
     - Yes you can definitely pipeline, and it should could have a problem in the critical path point of view because the critical path of the a `fetch + execute = execute`, however, this should not change the clock rate as the clock period would still the critical time of the instruction that takes the longest to execute.
     - No you cannot pipeline because there is a synchonous read path, you can still pipeline tho, but you will need to use 2 read paths, one for reading instructions and one for reading data, this way you can read from two addresses in the same cycle.
+    - Finished implementation with two read paths.
 
 - The three test-cases don't actually test all instructions. Try adding a test-case that
     tests any missed instructions.
