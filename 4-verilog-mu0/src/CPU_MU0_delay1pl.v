@@ -17,10 +17,12 @@ module CPU_MU0_delay1pl(
     input logic rst,
     output logic running,
     output logic[11:0] address,
+    output logic[11:0] address2,
     output logic write,
     output logic read,
     output logic[15:0] writedata,
-    input logic[15:0] readdata
+    input logic[15:0] readdata,
+    input logic[15:0] readdata2
     );
 
     /* Using an enum to define constants */
@@ -155,8 +157,8 @@ module CPU_MU0_delay1pl(
                 OPCODE_OUT: begin
                     $display("CPU : OUT   : %d", $signed(acc));
                     pc <= pc_increment;
-                    instr <= readdata;
-                    state <= EXEC_INSTR_ADDR;
+                    //instr <= readdata;
+                    state <= FETCH_INSTR_ADDR;
                 end
                 OPCODE_STP: begin
                     // Stop the simulation

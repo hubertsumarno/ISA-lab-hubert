@@ -3,12 +3,12 @@
 */
 module RAM_16x4096_delay1pl(
     input logic clk,
-    input logic[11:0] address1,
+    input logic[11:0] address,
     input logic[11:0] address2,
     input logic write,
     input logic read,
     input logic[15:0] writedata,
-    output logic[15:0] readdata1,
+    output logic[15:0] readdata,
     output logic[15:0] readdata2
 );
     parameter RAM_INIT_FILE = "";
@@ -28,15 +28,15 @@ module RAM_16x4096_delay1pl(
         end
     end
 
-    //assign readdata1 = read ? memory[address11] : 16'hxxxx;
+    //assign readdata = read ? memory[address11] : 16'hxxxx;
 
     /* Synchronous write path */
     always @(posedge clk) begin
-        //$display("RAM : INFO : read=%h, addr = %h, mem=%h", read, address1, memory[address1]);
+        //$display("RAM : INFO : read=%h, addr = %h, mem=%h", read, address, memory[address]);
         if (write) begin
-            memory[address1] <= writedata;
+            memory[address] <= writedata;
         end
-        readdata1 <= memory[address1]; // Read-after-write mode
+        readdata <= memory[address]; // Read-after-write mode
         readdata2 <= memory[address2];
     end
 endmodule
