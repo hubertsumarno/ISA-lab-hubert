@@ -186,7 +186,8 @@ Concrete modifications you might like to try are:
 
 - The three test-cases don't actually test all instructions. Try adding a test-case that
     tests any missed instructions.
-    - This is propably the easiest task. 
+    - This is propably the easiest task.
+    - I believe there is an inconsistency in the code, I believe that the instruction JGE should jump to the `instr_const` instead of the value in `acc` as proven by the contradiction in the disassembler. 
 
 - Think through edge-cases, and try to add test-cases. The MIPS presented here contains
     one known edge-cast failure, and possibly other unknowns. Traditional problem edge cases include:
