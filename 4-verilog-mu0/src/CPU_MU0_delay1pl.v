@@ -57,9 +57,9 @@ module CPU_MU0_delay1pl(
     logic[1:0] state;
 
     // Decide what address to put out on the bus, and whether to write
-    assign address = (state==FETCH_INSTR_ADDR || (state==EXEC_INSTR_ADDR && (instr_opcode==OPCODE_OUT))) ? pc : instr_constant;
+    assign address = (state==FETCH_INSTR_ADDR) ? pc : instr_constant;
     assign write = state==EXEC_INSTR_DATA ? instr_opcode==OPCODE_STO : 0;
-    assign read = (state==FETCH_INSTR_ADDR || (state==EXEC_INSTR_ADDR && (instr_opcode==OPCODE_OUT))) ? 1 : (state==EXEC_INSTR_ADDR && (instr_opcode==OPCODE_LDA || instr_opcode==OPCODE_ADD  || instr_opcode==OPCODE_SUB));
+    assign read = (state==FETCH_INSTR_ADDR) ? 1 : (state==EXEC_INSTR_ADDR && (instr_opcode==OPCODE_LDA || instr_opcode==OPCODE_ADD  || instr_opcode==OPCODE_SUB || instr_opcode==OPCODE_OUT ||OPCODE_STO));
     assign writedata = acc;
 
     // Break-down the instruction into fields
@@ -72,6 +72,8 @@ module CPU_MU0_delay1pl(
     // one concrete instance.
     wire[11:0] pc_increment;
     assign pc_increment = pc + 1;
+    assign address2 = pc_increment;
+
 
     /* We are targetting an FPGA, which means we can specify the power-on value of the
         circuit. So here we set the initial state to 0, and set the output value to
@@ -116,21 +118,25 @@ module CPU_MU0_delay1pl(
                 OPCODE_LDA: begin
                     acc <= readdata;
                     pc <= pc_increment;
-                    state <= FETCH_INSTR_ADDR;
+                    instr <= readdata2;
+                    state <= EXEC_INSTR_ADDR;
                 end
                 OPCODE_STO: begin
                     pc <= pc_increment;
-                    state <= FETCH_INSTR_ADDR;
+                    instr <= readdata2;
+                    state <= EXEC_INSTR_ADDR;
                 end
                 OPCODE_ADD: begin
                     acc <= acc + readdata;
                     pc <= pc_increment;
-                    state <= FETCH_INSTR_ADDR;
+                    instr <= readdata2;
+                    state <= EXEC_INSTR_ADDR;
                 end
                 OPCODE_SUB: begin
                     acc <= acc - readdata;
                     pc <= pc_increment;
-                    state <= FETCH_INSTR_ADDR;
+                    instr <= readdata2;
+                    state <= EXEC_INSTR_ADDR;
                 end
                 OPCODE_JMP: begin
                     pc <= instr_constant;
@@ -158,7 +164,8 @@ module CPU_MU0_delay1pl(
                     $display("CPU : OUT   : %d", $signed(acc));
                     pc <= pc_increment;
                     //instr <= readdata;
-                    state <= FETCH_INSTR_ADDR;
+                    instr <= readdata2;
+                    state <= EXEC_INSTR_ADDR;
                 end
                 OPCODE_STP: begin
                     // Stop the simulation
