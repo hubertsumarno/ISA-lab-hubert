@@ -183,17 +183,19 @@ Concrete modifications you might like to try are:
     instruction? If so, for which instructions is it possible? (Does this seem like a good
     idea, from a critical path point of view?)
     - Yes you can definitely pipeline, and it should could have a problem in the critical path point of view because the critical path of the a `fetch + execute = execute`, however, this should not change the clock rate as the clock period would still the critical time of the instruction that takes the longest to execute.
+    - No you cannot pipeline because there is a synchonous read path, you can still pipeline tho, but you will need to use 2 read paths, one for reading instructions and one for reading data, this way you can read from two addresses in the same cycle.
 
 - The three test-cases don't actually test all instructions. Try adding a test-case that
     tests any missed instructions.
     - This is propably the easiest task.
     - I believe there is an inconsistency in the code, I believe that the instruction JGE should jump to the `instr_const` instead of the value in `acc` as proven by the contradiction in the disassembler. 
+    - Done.
 
 - Think through edge-cases, and try to add test-cases. The MIPS presented here contains
     one known edge-cast failure, and possibly other unknowns. Traditional problem edge cases include:
 
-    - Sign extension
-    - Greater-than versus greater-or-equal
+    - Sign extension - done
+    - Greater-than versus greater-or-equal - done
     - Wrap-around of addresses
 
     The purpose of this type of infrastructure
@@ -211,22 +213,33 @@ about how you could/should test a MIPS.
 
 - MIPS has no equivalent to the OUT instruction for IO. How can you get
     output from a MIPS test-case?
+    - ANS: In the testbench, you can set when you would like to output the value in a certain register at a particular cycle using `$display`.
 
 - CPUs execute sequences of instructions, but in terms of development
     and debugging it is useful to be able to test each instruction
     individually. How might you attempt to test individual instructions
     in MIPS CPU?
+    - You can probably group the 'r' type instructions (except the jumps) together, same goes with 'i' type instructions and test the 'j' and other jump instructions individually as they have the most cases to test.
 
 - You can compile relatively complex C functions into MIPS assembly,
     but how do you know what the exact (bit-accurate) expected output should be?
+    - ANS: Compare it with the output from a C function ran on another machine.
 
 - How does splitting a CPU design into separate internal modules help with testing?
+    - ANS: You can test seperate modules seperately, ensuring that each of them work before running them through an overall testbench.
   
 - What sort of testing might you apply to an ALU?
+    - ANS: Test all of its functions (addition, subtraction, multiplication, division, etc) with mutiple types of input (integers vs floats, signed vs unsigned).
+    - One might also like to test edge-cases as in signed extension, corner cases in logical operations, etc.
 
 - What sorts of edge-cases would be worth testing in instructions like `andi` or `ori`?
+    - ANS: Perform the operation with all the possible combinations of 5b'xxxxx.
 
 - What sorts of edge-cases would be worth testing in `j`?
+    - ANS: 
+        - Jumping to the start and end of memory.
+        - IDK anymore.
   
 - If your MIPS CPU goes into an infinite loop for a particular sequence, how would you
     try to isolate the problem?
+    - ANS: First thing to look at is (quite obviously) the jump instructions and where they jump to. Then check the values of the registers after every cycle to see which part of your code performs this infinite loop.
