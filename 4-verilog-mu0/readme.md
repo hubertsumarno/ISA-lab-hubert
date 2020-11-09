@@ -173,10 +173,14 @@ Concrete modifications you might like to try are:
 - There is a lot of shared code between delay0 and delay1, particularly in the instruction execute
     logic. Can this logic be refactored out into a shared module?
     - I guess you can, so you create a lower level module and is it the final synthesis of both MU0 implementations.
+    - The thing is the only difference is in the state machines so I think it's possible, however, I am not that confident in Verilog to actually do it.
 
 - The delay1 variant always takes 4 cycles per instruction. Can you create a new variant
     which uses the minimal number of cycles for each instruction?
     - I guess you can, but I don't know where to start to be honest.
+    - Done, this is actually very easy! Just have to move all the non-read instructions (so everything except for LDA, ADD, and SUB) to the EXEC_INSTR_ADDR state and do executions there! 
+    - And for LDA, ADD, and SUB, just let the state change to EXEC_INSTR_DATA, simple.
+    - Oh and don't forget to change the logic of the `write` output for STO instructions as it now happens in the EXEC_INSTR_ADDR state instead of the EXEC_INSTR_DATA state.
 
 - In the delay1 variant, the instruction fetch always takes one cycle before the execution
     cycle. Is it possible to fetch the next instruction while executing the previous
@@ -190,14 +194,14 @@ Concrete modifications you might like to try are:
     tests any missed instructions.
     - This is propably the easiest task.
     - I believe there is an inconsistency in the code, I believe that the instruction JGE should jump to the `instr_const` instead of the value in `acc` as proven by the contradiction in the disassembler. 
-    - Done.
+    - Done, but ask about this.
 
 - Think through edge-cases, and try to add test-cases. The MIPS presented here contains
     one known edge-cast failure, and possibly other unknowns. Traditional problem edge cases include:
 
-    - Sign extension - done
+    - Sign extension - ask about this
     - Greater-than versus greater-or-equal - done
-    - Wrap-around of addresses
+    - Wrap-around of addresses - ask about this
 
     The purpose of this type of infrastructure
     is to make it very easy to add testcases, and  once you've added and resolved them they
@@ -234,13 +238,15 @@ about how you could/should test a MIPS.
     - One might also like to test edge-cases as in signed extension, corner cases in logical operations, etc.
 
 - What sorts of edge-cases would be worth testing in instructions like `andi` or `ori`?
-    - ANS: Perform the operation with all the possible combinations of 5b'xxxxx.
+    - ANS: Perform the operation with all the possible combinations of 5'bxxxxx.
 
 - What sorts of edge-cases would be worth testing in `j`?
     - ANS: 
         - Jumping to the start and end of memory.
+        - Loops
         - IDK anymore.
   
 - If your MIPS CPU goes into an infinite loop for a particular sequence, how would you
     try to isolate the problem?
     - ANS: First thing to look at is (quite obviously) the jump instructions and where they jump to. Then check the values of the registers after every cycle to see which part of your code performs this infinite loop.
+    - You can also try placing a STP instruction somewhere within the loop to see which instruction causes the problem (as if using a debugger basically).
