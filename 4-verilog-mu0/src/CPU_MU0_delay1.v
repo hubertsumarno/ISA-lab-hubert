@@ -136,7 +136,7 @@ module CPU_MU0_delay1(
                 end
                 OPCODE_JGE: begin
                     if (acc > 0) begin
-                        pc <= acc;
+                        pc <= instr_constant;
                     end
                     else begin
                         pc <= pc_increment;

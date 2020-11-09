@@ -244,7 +244,8 @@ about how you could/should test a MIPS.
     - ANS: 
         - Jumping to the start and end of memory.
         - Loops
-        - IDK anymore.
+        - Jump to another instructions that causes another jump.
+        - Jumping to yourself.
   
 - If your MIPS CPU goes into an infinite loop for a particular sequence, how would you
     try to isolate the problem?
