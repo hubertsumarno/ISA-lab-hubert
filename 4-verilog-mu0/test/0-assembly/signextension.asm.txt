@@ -1,0 +1,6 @@
+LDA X
+ADD ONE
+OUT
+
+X: 32767
+ONE: 1
