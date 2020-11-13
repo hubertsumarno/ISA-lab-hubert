@@ -109,11 +109,11 @@ module CPU_MU0_delay1pl(
             state <= EXEC_INSTR_ADDR;
         end
         else if (state==EXEC_INSTR_ADDR) begin
-            $display("CPU : INFO  : Executing (addr), opcode=%h, acc=%h, imm=%h, readdata=%x", instr_opcode, acc, instr_constant, readdata);
+            $display("CPU : INFO  : Executing (addr), address=%h, opcode=%h, acc=%h, imm=%h, readdata=%x, readdata2=%x", pc, instr_opcode, acc, instr_constant, readdata, readdata2);
             state <= EXEC_INSTR_DATA;
         end
         else if (state==EXEC_INSTR_DATA) begin
-            $display("CPU : INFO  : Executing (data), opcode=%h, acc=%h, imm=%h, readdata=%x", instr_opcode, acc, instr_constant, readdata);
+            $display("CPU : INFO  : Executing (data), address=%h, opcode=%h, acc=%h, imm=%h, readdata=%x, readdata2=%x", pc, instr_opcode, acc, instr_constant, readdata, readdata2);
             case(instr_opcode)
                 OPCODE_LDA: begin
                     acc <= readdata;

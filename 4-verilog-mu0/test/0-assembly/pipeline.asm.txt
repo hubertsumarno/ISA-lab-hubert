@@ -1,0 +1,11 @@
+LDA TEN
+SUB ONE
+OUT
+STO TEN
+TEN: 10
+OUT
+STP
+ONE: 1
+a: 5
+b: -35
+NEG_asd: -10
