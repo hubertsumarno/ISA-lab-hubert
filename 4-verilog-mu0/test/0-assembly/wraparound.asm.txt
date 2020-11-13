@@ -1,0 +1,3 @@
+LDA TWO
+JMP 4095
+TWO: 2
