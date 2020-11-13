@@ -125,7 +125,7 @@ module CPU_MU0_delay0(
                     state <= FETCH_INSTR;
                 end
                 OPCODE_JGE: begin
-                    if (acc > 0) begin
+                    if ($signed(acc) >= 0) begin
                         //pc <= acc;
                         pc <= instr_constant;
                     end
